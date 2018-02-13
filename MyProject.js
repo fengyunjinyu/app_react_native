@@ -1,36 +1,47 @@
-'use strict';
-import React, {
-    AppRegistry,
-    Component,
+import React, { Component } from 'react';
+import {
     StyleSheet,
     Text,
     Image,
     TextInput,
-    View,
-    Navigator
+    Button,
+    View
     } from 'react-native';
 
-
+import {StackNavigator} from 'react-navigation';
 import FirstPageComponent from './app/FirstPageComponent';
+class MyProject extends React.Component {
 
-export default class MyProject extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {};
+
+    }
+
+    static navigationOptions = {
+        title: 'DemoApp'
+    };
+
     render() {
-        var defaultName = 'FirstPageComponent';
-        var defaultComponent = FirstPageComponent;
         return (
-            <Navigator
-                //指定了默认的页面，也就是启动app之后会看到的第一屏，需要两个参数，name跟component
-                initialRoute={{ name: defaultName, component: defaultComponent }}
-                configureScene={(route) => {
-            //跳转的动画
-            return Navigator.SceneConfigs.FadeAndroid;
-          }}
-                renderScene={(route, navigator) => {
-            let Component = route.component;
-            if(route.component){
-                return <Component  navigator={navigator} />
-            }
-          }} />
+            <View>
+                <Text style={{height:100}}>内容部分</Text>
+                <Button title="打开登录界面"
+                        onPress={()=> {this.props.navigation.navigate('Chat')}} />
+
+            </View>
+
+
+
         );
     }
-} 
+}
+
+
+//集成组件必须集成StaticNavigator ,否则this.props.navigation 提示undefined
+const DemoApp = StackNavigator({
+    Home: {screen: MyProject},
+    Chat: {screen: FirstPageComponent}
+});
+
+export default DemoApp
